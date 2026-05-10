@@ -253,71 +253,67 @@ body {
     }
 }
 
-/* ─── COUNTDOWN ─── */
-.countdown-badge {
-    display: flex;
-    gap: 8px;
-    margin-top: auto;
-    padding-bottom: 12px;
-}
-.countdown-badge .cd-unit {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background: rgba(0,0,0,0.12);
-    padding: 6px 10px 4px;
-    min-width: 44px;
-}
-.countdown-badge .cd-num {
-    font-size: 22px;
-    font-weight: 900;
-    line-height: 1;
-    font-variant-numeric: tabular-nums;
-}
-.countdown-badge .cd-lbl {
-    font-size: 7px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
-    opacity: 0.7;
-    margin-top: 2px;
-}
-.countdown-badge.expired .cd-num { font-size: 11px; opacity: 0.6; }
 
 /* ─── MAP PING ─── */
 .hotspot-ping {
     position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 20px;  /* Dimensione base leggermente più grande per mobile */
+    height: 20px;
     pointer-events: none;
+    z-index: 10;  /* Forza l'elemento sopra gli altri layer */
 }
-.hotspot-ping::before,
+
+.hotspot-ping::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.4);
+    
+    /* Animazione e Performance */
+    animation: ping-pulse 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+    will-change: transform, opacity;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+}
+
 .hotspot-ping::after {
     content: '';
     position: absolute;
-    border-radius: 50%;
-    background: rgba(0,0,0,0.35);
-    width: 14px;
-    height: 14px;
-}
-.hotspot-ping::before {
-    animation: ping-pulse 2s ease-out infinite;
-    animation-delay: var(--ping-delay, 0s);
-}
-.hotspot-ping {
-    --ping-delay: 0s;
-}
-.hotspot-ping::after {
+    top: 50%;
+    left: 50%;
     width: 8px;
     height: 8px;
-    background: rgba(0,0,0,0.75);
+    background: rgba(0, 0, 0, 0.8);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
 }
+
 @keyframes ping-pulse {
-    0%   { transform: scale(1);   opacity: 0.7; }
-    70%  { transform: scale(2.8); opacity: 0; }
-    100% { transform: scale(2.8); opacity: 0; }
+    0% {
+        transform: scale(0.5);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(2.5);
+        opacity: 0;
+    }
+}
+
+/* ─── MEDIA QUERY PER DIMENSIONE MOBILE ─── */
+@media (max-width: 600px) {
+    .hotspot-ping {
+        width: 15px;  /* Rimpicciolisci qui per mobile */
+        height: 15px;
+    }
+    .hotspot-ping::after {
+        width: 6px;   /* Rimpicciolisci il centro */
+        height: 6px;
+    }
 }
 
 /* ─── WORKSHOP MODAL ─── */
